@@ -18,6 +18,14 @@ public class SignupRequestDto {
     private String username;
 
     @NotBlank(message = "Password is required")
+    @Pattern(
+            // At least one uppercase letter
+            // At least one lowercase letter
+            // At least one special symbol
+            // length 8-16
+            regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!]).{8,16}$",
+            message = "Password must be 8-16 characters long, contain an uppercase letter, a lowercase letter, and a special character"
+    )
     private String password;
 
     @NotBlank(message = "Email is required")
