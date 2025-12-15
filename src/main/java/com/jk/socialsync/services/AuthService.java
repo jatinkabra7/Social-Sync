@@ -1,6 +1,8 @@
 package com.jk.socialsync.services;
 
+import com.jk.socialsync.dtos.requests.LoginRequestDto;
 import com.jk.socialsync.dtos.requests.SignupRequestDto;
+import com.jk.socialsync.dtos.responses.LoginResponseDto;
 import com.jk.socialsync.dtos.responses.SignupResponseDto;
 import com.jk.socialsync.entities.UserEntity;
 import com.jk.socialsync.repositories.UserRepository;
@@ -8,6 +10,7 @@ import com.jk.socialsync.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +44,27 @@ public class AuthService {
         String jwt = jwtUtil.generateToken(user);
 
         return SignupResponseDto.builder()
+                .userId(user.getUserId())
+                .username(user.getUsername())
+                .email(user.getEmail())
+                .jwt(jwt)
+                .build();
+    }
+
+    public LoginResponseDto login(LoginRequestDto loginRequest) {
+        if (!userRepository.existsByUsername(loginRequest.getUsername())) {
+            throw new IllegalArgumentException("Account not found, please register with us");
+        }
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
+        );
+
+        UserEntity user = (UserEntity) authentication.getPrincipal();
+
+        String jwt = jwtUtil.generateToken(user);
+
+        return LoginResponseDto.builder()
                 .userId(user.getUserId())
                 .username(user.getUsername())
                 .email(user.getEmail())

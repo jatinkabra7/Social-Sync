@@ -1,6 +1,8 @@
 package com.jk.socialsync.controllers;
 
+import com.jk.socialsync.dtos.requests.LoginRequestDto;
 import com.jk.socialsync.dtos.requests.SignupRequestDto;
+import com.jk.socialsync.dtos.responses.LoginResponseDto;
 import com.jk.socialsync.dtos.responses.SignupResponseDto;
 import com.jk.socialsync.services.AuthService;
 import jakarta.validation.Valid;
@@ -13,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/private/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -23,5 +25,11 @@ public class AuthController {
     public ResponseEntity<SignupResponseDto> signup(@Valid @RequestBody SignupRequestDto signupRequest) {
         SignupResponseDto signupResponse = authService.signup(signupRequest);
         return new ResponseEntity<>(signupResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequest) {
+        LoginResponseDto loginResponse = authService.login(loginRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 }
