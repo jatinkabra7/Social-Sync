@@ -1,15 +1,18 @@
 package com.jk.socialsync.dtos.responses;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class SignupResponseDto {
     private Long userId;
     private String username;
     private String email;
-    private String jwt;
+    private String accessToken;
+    private String refreshToken;
 }

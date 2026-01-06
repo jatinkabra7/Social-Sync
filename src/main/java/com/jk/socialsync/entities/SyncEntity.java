@@ -18,7 +18,7 @@ public class SyncEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long syncId;
 
     @Column(unique = true, updatable = false)
     private String mediaUrl;

@@ -14,7 +14,7 @@ public class FollowEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long followId;
 
     @ManyToOne
     @JoinColumn(nullable = false)
