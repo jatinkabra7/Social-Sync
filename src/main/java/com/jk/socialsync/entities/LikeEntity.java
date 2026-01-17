@@ -11,22 +11,22 @@ import org.hibernate.annotations.OnDeleteAction;
 @Getter
 @Setter
 @Builder
-@Table(name = "follows", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"follower_id", "following_id"})
+@Table(name = "likes", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"user_id", "post_id"}) // user and post together -> unique (prevents a user to like a post twice)
 })
-public class FollowEntity {
+public class LikeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "follower_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private UserEntity follower;
+    private UserEntity user;
 
     @ManyToOne
-    @JoinColumn(name = "following_id", nullable = false)
+    @JoinColumn(name = "post_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private UserEntity following;
+    private PostEntity post;
 }

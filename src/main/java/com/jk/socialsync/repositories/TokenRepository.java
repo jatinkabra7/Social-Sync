@@ -12,8 +12,8 @@ public interface TokenRepository extends JpaRepository<TokenEntity, Long> {
     @Query("""
     select t 
     from TokenEntity t
-    join UserEntity u on u.userId = t.user.userId
-    where t.user.userId = :userId
+    join UserEntity u on u.id = t.user.id
+    where t.user.id = :userId
     and t.isLoggedOut = false 
     """)
     List<TokenEntity> findAllTokensByUser(Long userId);

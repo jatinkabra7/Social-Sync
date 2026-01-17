@@ -10,7 +10,6 @@ import com.jk.socialsync.repositories.TokenRepository;
 import com.jk.socialsync.repositories.UserRepository;
 import com.jk.socialsync.security.JwtUtil;
 import com.jk.socialsync.types.TokenType;
-import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,6 +49,7 @@ public class AuthService {
                 .username(signupRequest.getUsername())
                 .email(signupRequest.getEmail())
                 .passwordHash(passwordEncoder.encode(signupRequest.getPassword()))
+                .isPublic(true)
                 .build();
 
         userRepository.save(user);
@@ -57,13 +57,13 @@ public class AuthService {
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        invalidatePreviousTokens(user.getUserId());
+        invalidatePreviousTokens(user.getId());
 
         saveToken(accessToken,user,TokenType.ACCESS);
         saveToken(refreshToken,user,TokenType.REFRESH);
 
         return SignupResponseDto.builder()
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .accessToken(accessToken)
@@ -85,13 +85,13 @@ public class AuthService {
         String accessToken = jwtUtil.generateAccessToken(user);
         String refreshToken = jwtUtil.generateRefreshToken(user);
 
-        invalidatePreviousTokens(user.getUserId());
+        invalidatePreviousTokens(user.getId());
 
         saveToken(accessToken,user,TokenType.ACCESS);
         saveToken(refreshToken,user,TokenType.REFRESH);
 
         return LoginResponseDto.builder()
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .accessToken(accessToken)

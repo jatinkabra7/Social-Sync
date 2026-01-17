@@ -3,7 +3,6 @@ package com.jk.socialsync.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-import org.antlr.v4.runtime.Token;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,7 +24,7 @@ public class UserEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    private Long id;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -42,6 +41,9 @@ public class UserEntity implements UserDetails {
     @Column(unique = true)
     private String profilePictureUrl;
 
+    @Column(nullable = false)
+    private Boolean isPublic;
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -49,7 +51,7 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TokenEntity> tokens = new HashSet<>();
 
-    @OneToMany(mappedBy = "followedBy", cascade = CascadeType.ALL)
+    /*@OneToMany(mappedBy = "followedBy", cascade = CascadeType.ALL)
     private Set<FollowEntity> followers = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -60,6 +62,9 @@ public class UserEntity implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PostEntity> posts = new HashSet<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<LikeEntity> likes = new HashSet<>();*/
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

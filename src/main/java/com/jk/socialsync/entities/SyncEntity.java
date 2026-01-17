@@ -4,6 +4,8 @@ import com.jk.socialsync.types.MediaType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +20,7 @@ public class SyncEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long syncId;
+    private Long id;
 
     @Column(unique = true, updatable = false)
     private String mediaUrl;
@@ -33,16 +35,9 @@ public class SyncEntity {
     @Column(nullable = false, updatable = false)
     private LocalDateTime validUntil;
 
-    @Column(nullable = false)
-    private Boolean isPublic;
-
-    @Column(nullable = false)
-    private Boolean isArchived;
-
-    private String userProfilePictureUrl;
-
     @ManyToOne
     @JoinColumn(nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private UserEntity user;
 
     @PrePersist

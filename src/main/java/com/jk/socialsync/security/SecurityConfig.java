@@ -1,6 +1,9 @@
 package com.jk.socialsync.security;
 
+import com.jk.socialsync.dtos.responses.PostAddResponseDto;
+import com.jk.socialsync.entities.PostEntity;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,5 +51,17 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+
+        // Explicitly mapping PostEntity's user to PostAddResponseDto's author
+        modelMapper.typeMap(PostEntity.class, PostAddResponseDto.class).addMappings(mapper -> {
+            mapper.map(PostEntity::getUser, PostAddResponseDto::setAuthor);
+        });
+
+        return modelMapper;
     }
 }

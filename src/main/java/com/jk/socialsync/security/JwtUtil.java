@@ -5,7 +5,6 @@ import com.jk.socialsync.entities.UserEntity;
 import com.jk.socialsync.repositories.TokenRepository;
 import com.jk.socialsync.types.TokenType;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,7 +54,7 @@ public class JwtUtil {
     public String generateToken(UserEntity user, Long expirationTime) {
         return Jwts.builder()
                 .subject(user.getUsername())
-                .claim("userId", user.getUserId())
+                .claim("userId", user.getId())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSecretKey())
